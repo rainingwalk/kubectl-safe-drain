@@ -3,6 +3,7 @@ package sdrain
 import (
 	"fmt"
 	"kubectl-sdrain/pkg/sdrain"
+	"time"
 
 	"k8s.io/kubectl/pkg/cmd/drain"
 
@@ -51,8 +52,9 @@ func NewDrainCmdOptions(f cmdutil.Factory, ioStreams genericclioptions.IOStreams
 		PrintFlags: genericclioptions.NewPrintFlags("safe drained").WithTypeSetter(scheme.Scheme),
 		IOStreams:  ioStreams,
 		safeDrainer: &sdrain.Helper{
-			Out:    ioStreams.Out,
-			ErrOut: ioStreams.ErrOut,
+			Out:     ioStreams.Out,
+			ErrOut:  ioStreams.ErrOut,
+			Timeout: 20 * time.Second,
 		},
 	}
 	return o
@@ -92,8 +94,15 @@ func (o *SafeDrainCmdOptions) Complete(f cmdutil.Factory, cmd *cobra.Command, ar
 	if len(args) > 0 && len(o.safeDrainer.Selector) > 0 {
 		return cmdutil.UsageErrorf(cmd, "error: cannot specify both a node name and a --selector option")
 	}
-
-	o.safeDrainer.DryRun = cmdutil.GetDryRunFlag(cmd)
+	DryRun, err := cmdutil.GetDryRunStrategy(cmd)
+	if err != nil {
+		return err
+	}
+	if DryRun == cmdutil.DryRunServer || DryRun == cmdutil.DryRunClient {
+		o.safeDrainer.DryRun = true
+	} else {
+		o.safeDrainer.DryRun = false
+	}
 
 	if o.safeDrainer.Client, err = f.KubernetesClientSet(); err != nil {
 		return err
@@ -172,8 +181,9 @@ func (o *SafeDrainCmdOptions) RunSafeDrain() error {
 	var fatal error
 	for _, info := range o.nodeInfos {
 		var err error
-
+		fmt.Fprintf(o.Out, "Drain node %s\n", info.Name)
 		if !o.safeDrainer.DryRun {
+			fmt.Fprintf(o.Out, "DeleteOrEvictPodsSimple %s\n", info.Name)
 			err = o.safeDeleteOrEvictPodsSimple(info)
 		}
 

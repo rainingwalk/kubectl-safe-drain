@@ -17,7 +17,7 @@ import (
 func (d *Helper) waitMigrate(ctx context.Context, interval, timeout time.Duration, controllers []podController, pods []corev1.Pod, onDoneFn func(controller *podController), globalTimeout time.Duration) error {
 	// TODO(justinsb): unnecessary?
 	getPodFn := func(namespace, name string) (*corev1.Pod, error) {
-		return d.Client.CoreV1().Pods(namespace).Get(name, metav1.GetOptions{})
+		return d.Client.CoreV1().Pods(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	}
 	_, err := waitForDelete(ctx, pods, interval, timeout, getPodFn, func(pod *corev1.Pod) {
 		fmt.Fprint(d.Out, fmt.Sprintf("pod %s/%s at %s removed\n", pod.Namespace, pod.Name, pod.Spec.NodeName))
@@ -118,7 +118,7 @@ type controllerStatus struct {
 }
 
 func getControllerInstance(client rest.Interface, resource, namespace, name string) (*controllerInstance, error) {
-	data, err := client.Get().Resource(resource).Namespace(namespace).Name(name).DoRaw()
+	data, err := client.Get().Resource(resource).Namespace(namespace).Name(name).DoRaw(context.TODO())
 	if err != nil {
 		return nil, err
 	}

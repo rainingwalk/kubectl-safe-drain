@@ -22,7 +22,7 @@ jobs:
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:
-        go-version: ^1.13
+        go-version: ^1.22
       id: go
 
     - name: Check out code into the Go module directory
@@ -50,57 +50,57 @@ jobs:
         draft: ${{ github.event.inputs.draft }}
         prerelease: ${{ github.event.inputs.prerelease }}
 
-    - name: Upload a Release Asset
-      uses: actions/upload-release-asset@v1.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_darwin_386.tar.gz
-        asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_darwin_386.tar.gz
-        asset_content_type: application/octet-stream
+    # - name: Upload a Release Asset
+    #   uses: actions/upload-release-asset@v1.0.2
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_darwin_386.tar.gz
+    #     asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_darwin_386.tar.gz
+    #     asset_content_type: application/octet-stream
 
-    - name: Upload a Release Asset
-      uses: actions/upload-release-asset@v1.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_darwin_amd64.tar.gz
-        asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_darwin_amd64.tar.gz
-        asset_content_type: application/octet-stream
+    # - name: Upload a Release Asset
+    #   uses: actions/upload-release-asset@v1.0.2
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_darwin_amd64.tar.gz
+    #     asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_darwin_amd64.tar.gz
+    #     asset_content_type: application/octet-stream
 
-    - name: Upload a Release Asset
-      uses: actions/upload-release-asset@v1.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_freebsd_386.tar.gz
-        asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_freebsd_386.tar.gz
-        asset_content_type: application/octet-stream
+    # - name: Upload a Release Asset
+    #   uses: actions/upload-release-asset@v1.0.2
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_freebsd_386.tar.gz
+    #     asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_freebsd_386.tar.gz
+    #     asset_content_type: application/octet-stream
 
 
-    - name: Upload a Release Asset
-      uses: actions/upload-release-asset@v1.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_freebsd_amd64.tar.gz
-        asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_freebsd_amd64.tar.gz
-        asset_content_type: application/octet-stream
+    # - name: Upload a Release Asset
+    #   uses: actions/upload-release-asset@v1.0.2
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_freebsd_amd64.tar.gz
+    #     asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_freebsd_amd64.tar.gz
+    #     asset_content_type: application/octet-stream
 
-    - name: Upload a Release Asset
-      uses: actions/upload-release-asset@v1.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_linux_386.tar.gz
-        asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_linux_386.tar.gz
-        asset_content_type: application/octet-stream
-    - name: Upload a Release Asset
+    # - name: Upload a Release Asset
+    #   uses: actions/upload-release-asset@v1.0.2
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_linux_386.tar.gz
+    #     asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_linux_386.tar.gz
+    #     asset_content_type: application/octet-stream
+    - name: Upload a Release Asset - linux_amd64
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -110,22 +110,32 @@ jobs:
         asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_linux_amd64.tar.gz
         asset_content_type: application/octet-stream
 
-    - name: Upload a Release Asset
+    - name: Upload a Release Asset - linux_arm64
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_windows_386.tar.gz
-        asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_windows_386.tar.gz
+        asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_linux_arm64.tar.gz
+        asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_linux_arm64.tar.gz
         asset_content_type: application/octet-stream
 
-    - name: Upload a Release Asset
-      uses: actions/upload-release-asset@v1.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_windows_amd64.tar.gz
-        asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_windows_amd64.tar.gz
-        asset_content_type: application/octet-stream
+    # - name: Upload a Release Asset
+    #   uses: actions/upload-release-asset@v1.0.2
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_windows_386.tar.gz
+    #     asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_windows_386.tar.gz
+    #     asset_content_type: application/octet-stream
+
+    # - name: Upload a Release Asset
+    #   uses: actions/upload-release-asset@v1.0.2
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: kubectl-safe-drain_${{ github.event.inputs.version }}_windows_amd64.tar.gz
+    #     asset_name: kubectl-safe-drain_${{ github.event.inputs.version }}_windows_amd64.tar.gz
+    #     asset_content_type: application/octet-stream

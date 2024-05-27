@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-osArray=("linux" "darwin" "freebsd" "windows")
-archs=("amd64" "386")
-version=${1-"0.0.1-preview1"}
+# osArray=("linux" "darwin" "freebsd" "windows")
+osArray=("linux")
+archs=("amd64" "arm64")
+version=${1-"0.0.1"}
 out_file="kubectl-safe-drain"
 
 build() {

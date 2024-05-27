@@ -1,6 +1,7 @@
 package sdrain
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -10,8 +11,10 @@ import (
 func (d *Helper) reCreateController(controller podController) error {
 	switch controller.Kind {
 	case "Deployment":
+		fmt.Println("reCreate Deployment")
 		return d.reCreateDeployment(controller.Namespace, controller.Name)
 	case "StatefulSet":
+		fmt.Println("reCreate StatefulSet")
 		return d.reCreateStatefulSet(controller.Namespace, controller.Name)
 	}
 
@@ -26,7 +29,7 @@ func (d *Helper) reCreate(resource, namespace, controllerName string, body []byt
 		Namespace(namespace).
 		Name(controllerName).
 		Body(body).
-		Do().
+		Do(context.TODO()).
 		Error()
 }
 

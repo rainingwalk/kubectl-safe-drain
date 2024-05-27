@@ -27,9 +27,9 @@ type Helper struct {
 	DryRun bool
 }
 
-// Get pods for nodeName
+// GetPodsForDeletion Get pods for nodeName
 func (d *Helper) GetPodsForDeletion(nodeName string) (*podDeleteList, []error) {
-	podList, err := d.Client.CoreV1().Pods(metav1.NamespaceAll).List(metav1.ListOptions{
+	podList, err := d.Client.CoreV1().Pods(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{
 		FieldSelector: fields.SelectorFromSet(fields.Set{"spec.nodeName": nodeName}).String()})
 	if err != nil {
 		return nil, []error{err}
@@ -82,7 +82,7 @@ func (d *Helper) getController(controller podController) (*podController, error)
 		return &controller, nil
 	}
 
-	rs, err := d.Client.AppsV1().ReplicaSets(controller.Namespace).Get(controller.Name, metav1.GetOptions{})
+	rs, err := d.Client.AppsV1().ReplicaSets(controller.Namespace).Get(context.TODO(), controller.Name, metav1.GetOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +96,7 @@ func (d *Helper) getController(controller podController) (*podController, error)
 	}, nil
 }
 
-// Migrate pods to other node
+// MigratePods Migrate pods to other node
 func (d *Helper) MigratePods(list *podDeleteList) error {
 	items := list.items
 	if len(items) == 0 {
@@ -107,6 +107,7 @@ func (d *Helper) MigratePods(list *podDeleteList) error {
 	var controllers []podController
 
 	for _, item := range items {
+		fmt.Printf("Migrating pod %s/%s\n", item.pod.Namespace, item.pod.Name)
 		controller := item.controller
 		controllerKey := fmt.Sprintf("%s_%s", controller.Kind, controller.Name)
 		if controllerMap[controllerKey] {
